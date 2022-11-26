@@ -44,20 +44,36 @@ namespace TsppAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(ProductDto productDto)
         {
-            List<ProductType> productTypes = new List<ProductType>();
-            foreach (var TypeId in productDto.TypeIds)
-            {
-                var productType = await _typeRepository.GetByIdAsync(TypeId);
-                if (productType != null)
-                {
-                    productTypes.Add(productType);
-                }
-            }
+            List<ProductType> productTypes = await GetProductTypesFromDto(productDto);
             if (productTypes.Any() is false)
             {
                 return BadRequest();
             }
-            var product = new Product
+
+            var product = SetProductFromDto(productDto, productTypes);
+
+            return await _repository.InsertAsync(product) 
+                ? Ok(product) 
+                : StatusCode(500, product);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<IEnumerable<Product>>> UpdateProduct(ProductDto productDto)
+        {
+            List<ProductType> productTypes = await GetProductTypesFromDto(productDto);
+            if (productTypes.Any() is false)
+            {
+                return BadRequest();
+            }
+
+            var product = SetProductFromDto(productDto, productTypes);
+
+            return await _repository.UpdateAsync(product)
+                ? Ok(product)
+                : StatusCode(500, product);
+        }
+        private Product SetProductFromDto(ProductDto productDto, List<ProductType> productTypes) 
+            => new()
             {
                 Id = productDto.Id,
                 Name = productDto.Name,
@@ -66,14 +82,7 @@ namespace TsppAPI.Controllers
                 Weight = productDto.Weight,
                 Types = productTypes
             };
-            if (await _repository.InsertAsync(product))
-            {
-                return Ok(product);
-            }
-            return StatusCode(500, product);
-        }
-        [HttpPut]
-        public async Task<ActionResult<IEnumerable<Product>>> UpdateProduct(ProductDto productDto)
+        private async Task<List<ProductType>> GetProductTypesFromDto(ProductDto productDto)
         {
             List<ProductType> productTypes = new List<ProductType>();
             foreach (var TypeId in productDto.TypeIds)
@@ -84,24 +93,7 @@ namespace TsppAPI.Controllers
                     productTypes.Add(productType);
                 }
             }
-            if (productTypes.Any() is false)
-            {
-                return BadRequest();
-            }
-            var product = new Product
-            {
-                Id = productDto.Id,
-                Name = productDto.Name,
-                Price = productDto.Price,
-                Amount = productDto.Amount,
-                Weight = productDto.Weight,
-                Types = productTypes
-            };
-            if (await _repository.UpdateAsync(product))
-            {
-                return Ok(product);
-            }
-            return StatusCode(500, product);
-        }       
+            return productTypes;
+        }
     }
 }
