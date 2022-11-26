@@ -6,12 +6,12 @@ namespace TsppAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PoductController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly IProductRepository _repository;
         private readonly IProductTypeRepository _typeRepository;
 
-        public PoductController(IProductRepository repository,
+        public ProductController(IProductRepository repository,
             IProductTypeRepository typeRepository)
         {
             _repository = repository;

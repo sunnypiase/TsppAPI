@@ -10,5 +10,10 @@ namespace TsppAPI.Repository
         public ProductTypeRepository(DataContext dataContext)
             : base(dataContext)
         { }
+
+        public override async Task<ProductType?> GetByIdAsync(int id)
+        {
+            return await _entity.Include("Products").FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

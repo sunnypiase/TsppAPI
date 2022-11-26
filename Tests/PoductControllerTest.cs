@@ -7,13 +7,13 @@ using TsppAPI.Controllers;
 using TsppAPI.Models;
 using TsppAPI.Repository.Abstract;
 using Xunit;
-using static TsppAPI.Controllers.PoductController;
+using static TsppAPI.Controllers.ProductController;
 
 namespace Tests
 {
     public class PoductControllerTest
     {
-        public PoductController ControllerMock { get; set; }
+        public ProductController ControllerMock { get; set; }
         public Mock<IProductRepository> productRepositoryMock { get; set; }
         public Mock<IProductTypeRepository> producTypeRepositoryMock { get; set; }
         public Product ProductData = new()
@@ -50,7 +50,7 @@ namespace Tests
 
             SetupMocks();
 
-            ControllerMock = new PoductController(
+            ControllerMock = new ProductController(
                 productRepositoryMock.Object,
                 producTypeRepositoryMock.Object);
         }

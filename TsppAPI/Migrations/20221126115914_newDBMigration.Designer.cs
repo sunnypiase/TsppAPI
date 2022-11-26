@@ -12,8 +12,8 @@ using TsppAPI.Data;
 namespace TsppAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221121222335_InitialCreate2")]
-    partial class InitialCreate2
+    [Migration("20221126115914_newDBMigration")]
+    partial class newDBMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
