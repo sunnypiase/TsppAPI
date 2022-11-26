@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TsppAPI.Models;
+using TsppAPI.Models.Dtos;
 using TsppAPI.Repository.Abstract;
 
 namespace TsppAPI.Controllers
@@ -101,17 +102,6 @@ namespace TsppAPI.Controllers
                 return Ok(product);
             }
             return StatusCode(500, product);
-        }
-        public record ProductDto
-        {
-            public int Id { get; init; }
-            public string Name { get; init; } = string.Empty;
-            public double Price { get; init; }
-            public int Amount { get; init; }
-            public double Weight { get; init; }
-            public ICollection<int>? TypeIds { get; init; }
-
-        }
-
+        }       
     }
 }
