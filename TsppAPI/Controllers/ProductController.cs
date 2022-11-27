@@ -52,8 +52,8 @@ namespace TsppAPI.Controllers
 
             var product = SetProductFromDto(productDto, productTypes);
 
-            return await _repository.InsertAsync(product) 
-                ? Ok(product) 
+            return await _repository.InsertAsync(product)
+                ? Ok(product)
                 : StatusCode(500, product);
         }
 
@@ -72,7 +72,7 @@ namespace TsppAPI.Controllers
                 ? Ok(product)
                 : StatusCode(500, product);
         }
-        private Product SetProductFromDto(ProductDto productDto, List<ProductType> productTypes) 
+        private Product SetProductFromDto(ProductDto productDto, List<ProductType> productTypes)
             => new()
             {
                 Id = productDto.Id,

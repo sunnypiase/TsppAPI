@@ -27,7 +27,7 @@ namespace TsppAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(ProductTypeDto productTypeDto)
         {
-           
+
             var product = new ProductType
             {
                 Id = 0,
@@ -41,5 +41,5 @@ namespace TsppAPI.Controllers
             return StatusCode(500, product);
         }
     }
-    
+
 }

@@ -2,7 +2,7 @@
 
 namespace TsppAPI.Repository.Abstract
 {
-    public interface IGenericRepository<TEntity> 
+    public interface IGenericRepository<TEntity>
         where TEntity : class
     {
         public Task<IEnumerable<TEntity>> GetAsync(

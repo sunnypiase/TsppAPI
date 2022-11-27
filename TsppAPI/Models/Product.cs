@@ -12,7 +12,7 @@
         public override bool Equals(object? obj)
         {
             Product? product = obj as Product;
-            
+
             return product is not null &&
                    Id == product.Id &&
                    Name == product.Name &&

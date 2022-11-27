@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TsppAPI.Models;
+﻿using TsppAPI.Models;
 
 namespace TsppAPI.Data
 {

@@ -1,8 +1,8 @@
-global using TsppAPI.Data;
 global using Microsoft.EntityFrameworkCore;
-using TsppAPI.Repository.Abstract;
-using TsppAPI.Repository;
+global using TsppAPI.Data;
 using System.Text.Json.Serialization;
+using TsppAPI.Repository;
+using TsppAPI.Repository.Abstract;
 
 var builder = WebApplication.CreateBuilder(args);
 
