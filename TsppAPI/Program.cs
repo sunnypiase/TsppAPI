@@ -1,8 +1,14 @@
 global using Microsoft.EntityFrameworkCore;
 global using TsppAPI.Data;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Text.Json.Serialization;
+using TsppAPI.Providers.Abstract;
+using TsppAPI.Providers;
 using TsppAPI.Repository;
 using TsppAPI.Repository.Abstract;
+using TsppAPI.Services;
+using TsppAPI.Services.Abstract;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,11 +24,17 @@ builder.Services.AddScoped<ISoldProductRepository, SoldProductRepository>();
 builder.Services.AddScoped<IStorageProductRepository, StorageProductRepository>();
 builder.Services.AddScoped<IStorageRepository, StorageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<ICurrentDbUserProvider>(CurrentDbUserProvider.Instance);
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+
+
+SqlConnectionStringBuilder connectionBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(connectionBuilder.ConnectionString);
 });
+CurrentDbUserProvider.Instance.SetUserCredentials(connectionBuilder.UserID, connectionBuilder.Password);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
