@@ -17,8 +17,8 @@ namespace TsppAPI.Controllers
             _authorizationService = authorizationService;
         }
         [HttpPost]
-        public ActionResult<Product> AuthorizeUser(string username, string password)
-            => _authorizationService.IsRightCredentials(username, password)
+        public ActionResult<Product> AuthorizeUser(AuthorizationDto authorizationDto)
+            => _authorizationService.IsRightCredentials(authorizationDto)
                  ? Ok("Success")
                  : NotFound("User not found");
     }

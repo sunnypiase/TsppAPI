@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Linq.Expressions;
+using TsppApi.Services;
 using TsppAPI.Models;
 using TsppAPI.Models.Dtos;
+using TsppAPI.Models.Filters;
 using TsppAPI.Repository.Abstract;
 
 namespace TsppAPI.Controllers
@@ -10,13 +14,19 @@ namespace TsppAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _repository;
+        private readonly IProductAmountRepository _productAmountRepository;
         private readonly IProductTypeRepository _typeRepository;
+        private readonly IMatrixDeterminantCalculator _matrixDeterminantCalculator;
 
         public ProductController(IProductRepository repository,
-            IProductTypeRepository typeRepository)
+            IProductTypeRepository typeRepository,
+            IProductAmountRepository productAmountRepository,
+            IMatrixDeterminantCalculator matrixDeterminantCalculator)
         {
             _repository = repository;
             _typeRepository = typeRepository;
+            _productAmountRepository = productAmountRepository;
+            _matrixDeterminantCalculator = matrixDeterminantCalculator;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
@@ -72,6 +82,22 @@ namespace TsppAPI.Controllers
                 ? Ok(product)
                 : StatusCode(500, product);
         }
+        [HttpPost("Filter")]
+        public async Task<ActionResult<Product>> GetFilteredProduct(ProductFilter productFilter)
+        {
+            Expression<Func<Product, bool>>? filter = (Product prod) => prod.Price >= productFilter.price;
+            var result = await _repository.GetAsync(filter: filter, includeProperties: new[] { "Types" });
+            return result?.Any()
+                ?? false
+                ? Ok(result)
+                : NotFound();
+        }
+        [HttpGet("Amount")]
+        public async Task<ActionResult<int>> GetProductAmount() => await _productAmountRepository.GetProductsAmount();
+        [HttpPost("Matrix")]
+        public async Task<ActionResult<double>> GetProductMatrixDeterminant(List<List<double>> matrix) 
+            => await Task.FromResult(_matrixDeterminantCalculator.CalculateDeterminant(matrix));
+
         private Product SetProductFromDto(ProductDto productDto, List<ProductType> productTypes)
             => new()
             {

@@ -1,8 +1,10 @@
 ﻿using System;
+using TsppAPI.Models.Dtos;
+
 namespace TsppAPI.Services.Abstract
 {
     public interface IAuthorizationService
     {
-        public bool IsRightCredentials(string login, string password);
+        public bool IsRightCredentials(AuthorizationDto authorizationDto);
     }
 }

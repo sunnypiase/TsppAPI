@@ -1,4 +1,5 @@
-﻿using TsppAPI.Providers.Abstract;
+﻿using TsppAPI.Models.Dtos;
+using TsppAPI.Providers.Abstract;
 using TsppAPI.Services.Abstract;
 
 namespace TsppAPI.Services
@@ -11,8 +12,8 @@ namespace TsppAPI.Services
         {
             _currentDbUserProvider = currentDbUserProvider;
         }
-        public bool IsRightCredentials(string login, string password) => 
-            _currentDbUserProvider.Username == login
-            && _currentDbUserProvider.Password == password;
+        public bool IsRightCredentials(AuthorizationDto authorizationDto) => 
+            _currentDbUserProvider.Username == authorizationDto.Login
+            && _currentDbUserProvider.Password == authorizationDto.Password;
     }
 }

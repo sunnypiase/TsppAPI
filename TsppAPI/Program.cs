@@ -9,6 +9,7 @@ using TsppAPI.Repository;
 using TsppAPI.Repository.Abstract;
 using TsppAPI.Services;
 using TsppAPI.Services.Abstract;
+using TsppApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services.AddScoped<IStorageRepository, StorageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ICurrentDbUserProvider>(CurrentDbUserProvider.Instance);
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+builder.Services.AddScoped<IProductAmountRepository, ProductAmountRepository>();
+builder.Services.AddScoped<IMatrixDeterminantCalculator, MatrixDeterminantCalculator>();
 
 
 SqlConnectionStringBuilder connectionBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection"));
